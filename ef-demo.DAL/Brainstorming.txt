@@ -1,0 +1,25 @@
+﻿-Vending Machine(s)
+
+-MachineTable
+	--Location (string)
+	--MachineId
+
+
+		--MachineProduct table (fk)
+		--ProductId (fk)
+		--MachineId (fk)
+		--Quantity
+
+--Product Table 
+	--ProductId
+	--Price
+	--Brand Name
+	--ManufacturerId
+	--ProductTypeId
+
+
+	--ProductType table (fk)
+
+
+	--Manufacturer table (fk)
+		
