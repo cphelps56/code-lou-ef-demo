@@ -13,10 +13,12 @@ namespace ef_demo.WebAPI
         
         // GET: api/<ManufacturersController>
         [HttpGet]
-        public IEnumerable<Manufacturer> Get()
+        public async Task<IActionResult> Get()
         {
             var context = new VendingMachineContext();
-            return context.Manufacturers;
+            var manufacturers = await context.Manufacturers.ToListAsync();
+
+            return Ok();
         }
 
         // GET api/<ManufacturersController>/5

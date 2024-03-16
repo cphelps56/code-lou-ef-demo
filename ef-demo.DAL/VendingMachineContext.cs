@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using System.Linq;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ef_demo.DAL
 {
-    public class VendingMachineContext : DbContext
+    public class VendingMachineContext : DbContext, IVendingMachineContext
     {
         public string DbPath { get; }
 
@@ -54,6 +56,13 @@ namespace ef_demo.DAL
 
     }
 
+    public interface IVendingMachineContext
+    {
+        DbSet<Manufacturer> Manufacturers { get; set; }
+        DbSet<ProductType> ProductTypes { get; set; }
+        DbSet<Product> Products { get; set; }
+    }
+
     public class Product
     {
         public int Id { get; set; }
@@ -66,6 +75,26 @@ namespace ef_demo.DAL
         [ForeignKey(nameof(ProductType))]
         public int ProductTypeId { get; set; }
         public ProductType ProductType { get; set; }
+        public decimal Price { get; set; }
+    }
+
+    public class ProductVM
+    {
+        [Required]
+        [MinLength(5)]
+        [DisplayName("Name")]
+        public string Name { get; set; }
+
+        [Required]
+        [DisplayName("Manufacturer")]
+        public int ManufacturerId { get; set; }
+
+        [Required]
+        [DisplayName("Product Type")]
+        public int ProductTypeId { get; set; }
+
+        [DisplayName("Price")]
+        [Required]
         public decimal Price { get; set; }
     }
 

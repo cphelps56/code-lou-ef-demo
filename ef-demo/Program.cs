@@ -2,17 +2,44 @@
 using ef_demo.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+void LogNumber(int number)
+{
+    Thread.Sleep(100);
+    Console.WriteLine(number);
+}
 
-var apiClient = new HttpClient();
-apiClient.BaseAddress = new Uri("https://pokeapi.co/api/");
-var response = await apiClient.GetAsync("v2/pokemon/ditto");
-var jsonResponse = await response.Content.ReadAsStringAsync();
-var pokemon = JsonSerializer.Deserialize<Pokemon>(jsonResponse);
+async Task LogNumberAsync(int number)
+{
+    await Task.Run(() =>
+    {
+        Console.WriteLine(number);
+    });
+}
 
-Console.WriteLine(pokemon.name);
+var zeroToOneHundred = Enumerable.Range(0, 100);
+
+//foreach (var number in zeroToOneHundred)
+//{
+//    LogNumber(number);
+//}
+
+var tasks = zeroToOneHundred.Select(x => LogNumberAsync(x));
+
+await Task.WhenAll(tasks);
+
+
+
+//var apiClient = new HttpClient();
+//apiClient.BaseAddress = new Uri("https://pokeapi.co/api/");
+//var response = await apiClient.GetAsync("v2/pokemon/ditto");
+//var jsonResponse = await response.Content.ReadAsStringAsync();
+//var pokemon = JsonSerializer.Deserialize<Pokemon>(jsonResponse);
+
+//Console.WriteLine(pokemon.name);
 
 //var manufacturers = JsonSerializer.Deserialize<IEnumerable<Manufacturer>>(jsonResponse, new JsonSerializerOptions
 //{
@@ -23,22 +50,22 @@ Console.WriteLine(pokemon.name);
 //    Console.WriteLine(manufacturer.Name);
 
 
-Console.WriteLine("Hello, World!");
+//Console.WriteLine("Hello, World!");
 
 
-using var db = new VendingMachineContext();
+//using var db = new VendingMachineContext();
 
-Console.WriteLine(db.DbPath);
+//Console.WriteLine(db.DbPath);
 
-var dietCoke = db.Products
-    .Include(x=> x.Manufacturer)
-    .Include(x=> x.ProductType)
-    .FirstOrDefault(p => p.Name == "Diet Coke");
+//var dietCoke = db.Products
+//    .Include(x=> x.Manufacturer)
+//    .Include(x=> x.ProductType)
+//    .FirstOrDefault(p => p.Name == "Diet Coke");
 
 
-Console.WriteLine(dietCoke.Manufacturer.Name);
+//Console.WriteLine(dietCoke.Manufacturer.Name);
 
-Console.ReadLine();
+//Console.ReadLine();
 
 //Console.WriteLine("----Menu Options----");
 //Console.WriteLine("Press 1 to List Available Products");
